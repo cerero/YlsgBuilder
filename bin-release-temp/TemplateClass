@@ -1,0 +1,14 @@
+/** 模块类模板 */
+package
+{
+	import flash.display.Sprite;
+	import {import};
+	public class {name} extends Sprite
+	{
+		public function {name}()
+		{
+			disposByteArray(loaderInfo.bytes);
+			var t:* = {import};
+		}
+	}
+}

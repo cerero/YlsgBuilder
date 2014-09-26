@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   invoke="invokeHandler(event)" 
+					   creationComplete="creationCompleteHandler(event)">
+	<!-- 脚本 -->
+	<fx:Script>
+		<![CDATA[
+			import build.EncrySwf;
+			import build.GenerateScript;
+			import build.MoveFile;
+			import build.Optimization;
+			
+			import data.Config;
+			
+			import mx.events.FlexEvent;
+			
+			import utils.Output;
+			import utils.SwfUtil;
+			
+			/** 当前目录 */
+			private var currentDirectory:File;
+			
+			/** 
+			 * 处理外部参数 
+			 * @param	cmd 项目目录
+			 */
+			protected function invokeHandler(event:InvokeEvent):void
+			{
+				currentDirectory = event.currentDirectory;
+				Config.load(File.applicationDirectory);
+				
+				var tlog:File = new File(currentDirectory.parent.nativePath + File.separator + "log");
+				
+				/*   (new Optimization()).makeVersion(
+					nativeApplication,
+					currentDirectory);
+				return;   */
+				
+				if(event.arguments[0] == "dump-script"){
+					//生成脚本
+					Output.initlized(tlog, "dump-script.log");
+					Output.clear();
+					(new GenerateScript()).buildScript(
+						nativeApplication,
+						currentDirectory,
+						event.arguments.length > 1 ? event.arguments[1] : 10
+					);
+				}
+				else if(event.arguments[0] == "encry"){
+					//加密
+					Output.initlized(tlog, "encry.log");
+					Output.clear();
+					(new EncrySwf()).encry(
+						nativeApplication,
+						currentDirectory);
+				}
+				else if(event.arguments[0] == "optimize"){
+					//优化
+					Output.initlized(tlog, "optimize.log");
+					Output.clear();
+					Config.constructPath(currentDirectory);
+					(new Optimization()).makeVersion(
+						nativeApplication,
+						currentDirectory);
+				}
+				else if(event.arguments[0] == "move_file"){
+					(new MoveFile()).start(nativeApplication,currentDirectory);
+				}
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				//文件拖动事件
+				addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, onDragIn);
+				addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, onDrop);
+			}
+			
+			private function onDragIn(event:NativeDragEvent):void
+			{
+				NativeDragManager.acceptDragDrop(this);
+			}
+			
+			/** 加密拖拽进来的文件 */
+			private function onDrop(event:NativeDragEvent):void
+			{
+				var tlist:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+				//加密指定的swf文件
+				if(encry_swf.selected)
+				{
+					SwfUtil.encrytSwf(tlist, null, true);
+				}
+				else if(encry.selected)
+				{
+					//加密项目
+					(new EncrySwf()).encry(null, tlist[0]);
+				}
+				else if(script.selected)
+				{
+					//生成编译脚本
+					(new GenerateScript()).buildScript(
+						null,
+						tlist[0],
+						10
+					);
+				}
+				else if(config.selected)
+				{
+					/* var tlog:File = new File(currentDirectory.parent.nativePath + File.separator + "log");
+					Output.initlized(tlog, "optimize.log");
+					Output.clear(); */
+					Config.constructPath(tlist[0]);
+					//生成配置文件
+					(new Optimization()).makeVersion(null, tlist[0]);
+				}
+				 else if(moveFile.selected)
+				{
+					//移动文件
+					(new MoveFile()).start(null, tlist[0]);
+				} 
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup x="36" y="36" variableRowHeight="false">
+		<s:RadioButton id="encry_swf" label="加密Swf文件" selected="true"/>
+		<s:RadioButton id="encry" label="项目完整加密"/>
+		<s:RadioButton id="script" label="生成编译脚本"/>
+		<s:RadioButton id="config" label="优化配置文件"/>
+		<s:RadioButton id="moveFile" label="移动文件"/>
+	</s:VGroup>
+</s:WindowedApplication>

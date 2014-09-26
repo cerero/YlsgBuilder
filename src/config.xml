@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <publish_base_res_path>ylsg_output_pub</publish_base_res_path>
+    <publish_game_res_path>ylsg_output_pub </publish_game_res_path>
+    
+	<!-- 加密功能配置 -->
+	<encry>
+		<!-- 加密的文件列表 -->
+		<files>
+			<item>plugin_game.swf</item>
+			<item>plugin_sceneUi.swf</item>
+			<item>plugin_login.swf</item>
+			<item>plugin_achieve.swf</item>
+			<item>plugin_antiAddiction.swf</item>
+			<item>plugin_arena.swf</item>
+			<item>plugin_worker.swf</item>
+			<item>plugin_scene.swf</item>
+			<item>plugin_console.swf</item>
+			<item>plugin_create.swf</item>
+			<item>lib_fge_all.swf</item>
+			<item>NetEngine.swf</item>
+			<item>GameModule.swf</item>
+		</files>
+		<!-- 加密的目录列表 -->
+		<folder>
+			<item>modules</item>
+		</folder>
+	</encry>
+	
+	<!-- 优化功能配置 -->
+	<optimiza>
+		<source>WdqkAssets/assets</source>
+		<output>WdqkClient/compiler/output</output>
+		<!-- 生成配置文件 -->
+		<conf>
+			<item>assets/data/res</item>
+			<item>assets/data/item</item>
+		</conf>
+		<!-- 生成版本 -->
+		<version>
+			<!-- 目录 -->
+			<exclude>
+				<item>assets/data/chat_fraud_filter.xml</item>
+			</exclude>
+			<!-- 版本跳过 -->
+			<ver_skips>
+				<item>.svn</item>
+				<item>.ds_store</item>
+				<item>thumbs.db</item>
+				<item>__macos</item>
+				<item>.project</item>
+				<item>.settings</item>
+				<item>.actionScriptProperties</item>
+				<item>config.json</item>
+			</ver_skips>
+			<!-- 版本跳过的目录 -->
+			<ver_dir_skips>
+				<item>assets/data/res/</item>
+				<item>assets/data/item/</item>
+				<item>assets/ui</item>
+			</ver_dir_skips>
+			<!-- 版本跳过的扩展名 -->
+			<ver_ext_skips>
+				<item>123456789</item>
+			</ver_ext_skips>
+			<!-- 整个目录使用一个版本的父目录列表（此目录的子目录以目录为版本管理最小单位） -->
+			<ver_dir>
+				<item>assets/map</item>
+			</ver_dir>
+		</version>
+		<!-- 配置文件优化跳过 -->
+		<cfg_skips>
+			<item>.svn</item>
+			<item>.ds_store</item>
+			<item>thumbs.db</item>
+			<item>config.json</item>
+			<item>__macos</item>
+			<item>.project</item>
+			<item>.settings</item>
+			<item>.actionScriptProperties</item>
+			<item>bat</item>
+			<item>crossdomain.xml</item>
+			<item>mimetype</item>
+			<item>playerProductInstall.swf</item>
+			<item>history</item><!-- history assets-->
+			<item>swfobject.js</item>
+			<item>uncopy.txt</item>
+			<item>version.xml</item>
+			<item>startup.html</item>
+			<item>fla</item>
+			<item>startup.swf</item>
+			<item>startup.xml</item>
+			<item>plugin.xml</item>
+			<item>playerproductinstall</item>
+		</cfg_skips>
+		<!-- 资源文件最大文件尺寸 -->
+		<file_max_size>6291456</file_max_size>
+	</optimiza>
+	
+	<!-- 生成编译脚本功能配置 -->
+	<script>
+		<!-- 生产基础SWF文件的前提库文件，有顺序要求 -->
+		<ref_swf>
+		    <item>CommonProgressBar.swf</item>
+			<item>lib_fge_all.swf</item>
+			<item>NetEngine.swf</item>
+			<!--<item>UtilLib.swf</item>-->
+		</ref_swf>
+		<!-- 基础SWF文件，有顺序要求 -->
+		<base_swf>
+			<item>GameModule.swf</item>
+			<item>UIModule.swf</item>
+		</base_swf>
+		<!-- 编译的项目 -->
+		<project>
+			<!-- 项目名称 -->
+			<name>YlsgClient</name>
+			<!-- 源码目录列表 -->
+			<source>
+				<item>src</item>
+			</source>
+		</project>
+		<!-- config 文件 -->
+		<config_file>WdqkAssets/assets/client/config.json</config_file>
+		<!-- 被分析的模块，生成配置文件中的modules属性 -->
+		<modules>
+			<item>com.wdqk.module.ui::MainUIModule</item>
+			<item>com.wdqk.module.ui::GameUIModule</item>
+			<item>com.wdqk.module.ui::NpcUIModule</item>
+		</modules>
+		<!-- 生成外部编译脚本忽略的模块 -->
+		<script_exclude>
+			<item>GameModule</item>
+			<item>MainUIModule</item>
+		</script_exclude>
+		<!-- 生成编译脚本 load-config 参数 -->
+		<config>../config/flex-config-v11.xml</config>
+		<!-- 生成编译脚本 load-externs 参数 -->
+		<load_externs>
+			<item>../report/GameModuleReport.xml</item>
+			<!-- 
+			<item>../report/UIModule.xml</item>  -->
+		</load_externs>
+	</script>
+</root>
